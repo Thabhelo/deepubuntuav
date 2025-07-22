@@ -1,0 +1,65 @@
+version: '3.8'
+
+networks:
+  deepubuntuav:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  mongodb_data:
+  redis_data:
+
+services:
+  # Databases
+  postgres:
+    image: postgres:15-alpine
+    container_name: deepubuntuav-postgres
+    environment:
+      POSTGRES_DB: deepubuntuav
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: devpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - deepubuntuav
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev -d deepubuntuav"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongodb:
+    image: mongo:6-jammy
+    container_name: deepubuntuav-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: dev
+      MONGO_INITDB_ROOT_PASSWORD: devpass
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - deepubuntuav
+
+  redis:
+    image: redis:7-alpine
+    container_name: deepubuntuav-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - deepubuntuav
+
+  # Development Tools
+  adminer:
+    image: adminer:4.8.1
+    container_name: deepubuntuav-adminer
+    ports:
+      - "8081:8080"
+    networks:
+      - deepubuntuav
+    depends_on:
+      - postgres
