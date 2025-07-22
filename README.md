@@ -19,13 +19,13 @@ Traditional AV datasets focus on well-maintained roads in developed regions. Dee
 DeepUbuntuAV is built as a **microservice architecture** with 12 specialized services:
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Web Portal    │    │   Mobile App    │    │  Dashcam API    │
-│  (React/Next)   │    │   (Future)      │    │  Integration    │
-└─────────┬───────┘    └─────────┬───────┘    └─────────┬───────┘
-          │                      │                      │
-          └──────────────────────┼──────────────────────┘
-                                 │
+ ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+ │   Web Portal    │    │   Mobile App    │    │  Dashcam API    │
+ │  (React/Next)   │    │   (Future)      │    │  Integration    │
+ └─────────┬───────┘    └─────────┬───────┘    └─────────┬───────┘
+           │                      │                      │
+           └──────────────────────┼──────────────────────┘
+                                  │
                     ┌─────────────┴───────────────┐
                     │      API Gateway            │
                     │     (Kong/Express)          │
